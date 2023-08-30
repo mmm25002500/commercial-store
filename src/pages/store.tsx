@@ -1,7 +1,9 @@
 import Card from "@/components/Card";
 import { db } from "@/config/firebase";
-import { getFirestore, collection, getDocs, DocumentData } from "firebase/firestore";
+import { collection, getDocs, DocumentData, deleteDoc, doc } from "firebase/firestore";
+import router from "next/router";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface ProductData {
   data: DocumentData;
@@ -13,37 +15,55 @@ const Store = () => {
 
   // get all users when component is mounted
   useEffect(() => {
-    getUsers()
+    getProducts()
   }, []);
 
-  // get all users
-  const getUsers = () => {
-    const usersRef = collection(db, 'products');
-    getDocs(usersRef)
+  // get all products
+  const getProducts = () => {
+    const productsRef = collection(db, 'products');
+    getDocs(productsRef)
       .then(res => {
-        const usersData = res.docs.map(
+        const productData = res.docs.map(
           doc => ({
             data: doc.data(),
             id: doc.id
           })
         );
-        setProducts(usersData);
+        setProducts(productData);
       })
       .catch(err => {
         console.log(err);
       })
   }
 
+  const deleteProduct = (id: string) => {
+    const productDocRef = doc(db, 'products', id);
+    deleteDoc(productDocRef)
+      .then(() => {
+        toast.success("刪除成功！", {
+          position: "top-right"
+        })
+        getProducts()
+      })
+      .catch((error) => {
+        toast.error(`刪除失敗！\n錯誤訊息：\n${error}`, {
+          position: "top-right"
+        })
+      });
+  }
+  
   return (
     <div className="container mx-auto pt-8 pl-5 pr-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {products.map((product) => (
-          <div key={product.data.title}>
+          <div key={product.id}>
             <Card
               title={product.data.title}
               description={product.data.description}
               link="/"
               img={product.data.img}
+              id={product.id}
+              deleteProduct={deleteProduct}
             />
           </div>
         ))}

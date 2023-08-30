@@ -13,7 +13,11 @@ const Cart = () => {
     if (user) {
       // console.log('User is logged in');
       setUser(user);
-    } else {
+    } else {  
+      toast.error("請先登入！", {
+        position: "top-right"
+      });
+
       setUser(undefined);
     }
   });
@@ -21,12 +25,6 @@ const Cart = () => {
   // 一進頁面就驗證，如果沒登入就導回首頁
   useEffect(() => {
     checkAuth();
-    if (!user) {
-      router.push('/');
-      toast.error("驗證失敗！請先登入！", {
-        position: "top-right"
-      });
-    }
   }, []);
   
   return (

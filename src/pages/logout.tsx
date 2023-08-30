@@ -15,7 +15,7 @@ const LogoutPage = () => {
 
       const handleLogout = async () => {
         try {
-          await signOut(auth); // 使用 auth 实例来登出用户
+          await signOut(auth);
           toast.success("登出成功！", {
             position: "top-right"
           });
