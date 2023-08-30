@@ -6,6 +6,8 @@ import { auth, db } from '@/config/firebase';
 import CartCard from '@/components/CartCard';
 import { useRouter } from 'next/router';
 import { ProductData } from './addItem';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 
 interface CartItem extends ProductData{
   id: string;
@@ -111,6 +113,45 @@ const Cart = () => {
     
     };
   
+    // 清空垃圾桶
+    const clearCart = async () => {
+      try {
+        if (user) {
+          const uid = user.uid;
+          const cartRef = collection(db, 'cart');
+          const q = query(cartRef, where('uid', '==', uid));
+          const querySnapshot = await getDocs(q);
+    
+          if (!querySnapshot.empty) {
+            const cartDoc = querySnapshot.docs[0];
+            const cartId = cartDoc.id;
+    
+            await updateDoc(doc(db, 'cart', cartId), {
+              items: []
+            });
+    
+            loadCartItems(uid);
+    
+            toast.success('已成功清空購物車！', {
+              position: 'top-right'
+            });
+          } else {
+            toast.error('找不到購物車！', {
+              position: 'top-right'
+            });
+          }
+        } else {
+          toast.error('請先登入！', {
+            position: 'top-right'
+          });
+        }
+      } catch (error) {
+        toast.error(`清空購物車失敗！\n錯誤訊息：\n${error}`, {
+          position: 'top-right'
+        });
+      }
+    };
+    
    // 加載購物車商品資訊
     useEffect(() => {
       if (cart?.items) {
@@ -140,20 +181,40 @@ const Cart = () => {
   
   return (
     <div className="container mx-auto pt-8 pl-5 pr-5">
+      {
+        cartProducts.length === 0 ? (
+          <div className="flex items-center p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 dark:border-red-800 text-lg" role="alert">
+            <FontAwesomeIcon icon={faTriangleExclamation} className="inline w-4 h-4 mr-3" />
+            <span className="sr-only">Info</span>
+            <div>
+              <span className="font-bold">喔不!</span> 購物車是空的！！！
+              <button className="underline underline-offset-4 text-cyan-300" onClick={() => router.push('/store')}>點我立刻去消費？</button>
+            </div>
+          </div>
+        ) : (
+            <button onClick={clearCart} className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                點我清空所有垃圾桶
+            </span>
+          </button>
+        )
+      }
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {cartProducts.map((product) => (
-          <div key={product.id}>
-            <CartCard
-              title={product.title!}
-              description={product.description}
-              link="/"
-              img={product.img_addr}
-              price={product.price}
-              id={product.id}
-              deleteProduct={deleteProduct}
-            />
-        </div>
-        ))}
+        {
+          cartProducts.map((product) => (
+            <div key={product.id}>
+              <CartCard
+                title={product.title!}
+                description={product.description}
+                link="/"
+                img={product.img_addr}
+                price={product.price}
+                id={product.id}
+                deleteProduct={deleteProduct}
+              />
+            </div>
+          ))
+        }
       </div>
     </div>
   );
