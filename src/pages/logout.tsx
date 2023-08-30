@@ -32,6 +32,7 @@ const LogoutPage = () => {
       toast.error("登出失敗！您未登入，請先登入！", {
         position: "top-right"
       });
+      router.push('/');
     }
   });
   

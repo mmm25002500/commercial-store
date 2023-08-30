@@ -13,20 +13,20 @@ const MyPage = () => {
     if (user) {
       // console.log('User is logged in');
       setUser(user);
+
     } else {
       setUser(undefined);
+      toast.error("驗證失敗！請先登入！", {
+        position: "top-right"
+      });
+      router.push('/');
     }
   });
+  
 
   // 一進頁面就驗證，如果沒登入就導回首頁
   useEffect(() => {
     checkAuth();
-    if (!user) {
-      router.push('/');
-      toast.error("驗證失敗！請先登入！", {
-        position: "top-right"
-      });
-    }
   }, []);
 
   useEffect(() => {

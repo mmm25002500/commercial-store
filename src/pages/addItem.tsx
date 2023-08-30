@@ -23,10 +23,11 @@ const AddItem = () => {
       // console.log('User is logged in');
       setUser(user);
     } else {
+      setUser(undefined);
       toast.error("請先登入！", {
         position: "top-right"
       });
-      setUser(undefined);
+      router.push('/');
     }
   });
 
