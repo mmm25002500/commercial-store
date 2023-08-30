@@ -30,24 +30,26 @@ const MyPage = () => {
   }, []);
 
   return (
-    <div className="text-left text-gray-500 dark:text-gray-400 text-2xl">
-      <p>
-        個人頁面
-      </p>
-      <p>
-        你的名字：{user?.displayName} <br />
-        你的信箱：{user?.email} <br />
-        你的手機：{user?.phoneNumber} <br />
-        {
-          user?.photoURL ? (
-            <>
-              你的照片：<img src={user?.photoURL} alt="user photo" className="inline" /> <br />
-            </>
-          )
-           : <></>
-        }
-        你的uid：{user?.uid} <br />
-      </p>
+    <div className="container mx-auto pt-8 pl-5 pr-5">
+      <div className="text-left text-gray-500 dark:text-gray-400 text-2xl">
+        <p>
+          個人頁面
+        </p>
+        <p>
+          你的名字：{user?.displayName} <br />
+          你的信箱：{user?.email} <br />
+          你的手機：{user?.phoneNumber} <br />
+          {
+            user?.photoURL ? (
+              <>
+                你的照片：<img src={user?.photoURL} alt="user photo" className="inline" /> <br />
+              </>
+            )
+            : <></>
+          }
+          你的uid：{user?.uid} <br />
+        </p>
+      </div>
     </div>
   )
 }
