@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-interface ProductData {
+export interface ProductData {
   title: string;
   description: string;
   price: number;
