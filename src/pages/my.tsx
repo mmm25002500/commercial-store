@@ -1,18 +1,33 @@
 import { auth } from "@/config/firebase";
 import { Unsubscribe, User, onAuthStateChanged } from "firebase/auth";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const MyPage = () => {
-  const [user, setUser] = useState<User | undefined>();
+  const [user, setUser] = useState<User>();
+  const router = useRouter();
 
+  // 驗證是否登入
   const checkAuth = (): Unsubscribe => onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log('User is logged in');
+      // console.log('User is logged in');
       setUser(user);
     } else {
-      console.log('User is not logged in');
+      setUser(undefined);
     }
   });
+
+  // 一進頁面就驗證，如果沒登入就導回首頁
+  useEffect(() => {
+    checkAuth();
+    if (!user) {
+      router.push('/');
+      toast.error("驗證失敗！請先登入！", {
+        position: "top-right"
+      });
+    }
+  }, []);
 
   useEffect(() => {
     checkAuth();
