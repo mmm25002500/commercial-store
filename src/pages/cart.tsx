@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getDocs, collection, doc, getDoc, query, where, updateDoc } from 'firebase/firestore';
+import { getDocs, collection, doc, getDoc, query, where, updateDoc, deleteDoc } from 'firebase/firestore';
 import { User, Unsubscribe, onAuthStateChanged } from 'firebase/auth';
 import toast from 'react-hot-toast';
 import { auth, db } from '@/config/firebase';
@@ -17,6 +17,52 @@ export interface CartData {
   uid: string;
   items: CartItem[];
 }
+
+// 刪除購物車資料(搭配刪除帳號使用)
+export const deleteCart = async (uid: string) => {
+  try {
+    // 找到匹配的 cart 文檔
+    const cartQuery = query(collection(db, 'cart'), where('uid', '==', uid));
+    const cartQuerySnapshot = await getDocs(cartQuery);
+
+    if (!cartQuerySnapshot.empty) {
+      // 刪除 cart 文檔
+      const cartDoc = cartQuerySnapshot.docs[0];
+      const cartDocRef = doc(db, 'cart', cartDoc.id);
+      await deleteDoc(cartDocRef);
+      toast.success("刪除購物車資料成功！", {
+        position: "top-right" 
+      });
+    } else {
+      toast.error("找不到購物車資料！", {
+        position: "top-right" 
+      });
+    }
+  } catch (error) {
+    toast.error(`刪除購物車資料失敗！\n錯誤訊息：\n${error}`, {
+      position: "top-right" 
+    });
+  }
+}
+
+// 使用 商品 doc id 來去取得商品資訊
+export const getProduct = async (id: string) => {
+  try {
+    const productRef = doc(db, 'products', id);
+    const productSnap = await getDoc(productRef);
+    if (productSnap.exists()) {
+      // console.log('Document data:', productSnap.data());
+      return productSnap.data() as ProductData;
+    } else {
+      // doc.data() will be undefined in this case
+      console.log('No such document!');
+      return undefined;
+    }
+  } catch (error) {
+    console.error('Error getting document:', error);
+    return undefined;
+  }
+};
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState<CartItem[]>([]);
@@ -55,25 +101,6 @@ const Cart = () => {
     
       } catch (error) {
         console.error('Error loading cart items:', error);
-      }
-    };
-  
-    // 使用 id 取得資訊
-    const getProduct = async (id: string) => {
-      try {
-        const productRef = doc(db, 'products', id);
-        const productSnap = await getDoc(productRef);
-        if (productSnap.exists()) {
-          // console.log('Document data:', productSnap.data());
-          return productSnap.data() as ProductData;
-        } else {
-          // doc.data() will be undefined in this case
-          console.log('No such document!');
-          return undefined;
-        }
-      } catch (error) {
-        console.error('Error getting document:', error);
-        return undefined;
       }
     };
   
@@ -170,7 +197,6 @@ const Cart = () => {
         };
     
         fetchCartProducts();
-        console.log(cartProducts);
       }
 
     }, [cart]);
