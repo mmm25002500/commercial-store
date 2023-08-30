@@ -1,6 +1,5 @@
 import { auth } from "@/config/firebase";
 import { GoogleAuthProvider, Unsubscribe, User, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
 
 // 登入，會跳出 Google 登入視窗
@@ -32,20 +31,9 @@ export const checkAuth = (): Unsubscribe => onAuthStateChanged(auth, (user) => {
   if (user) {
     // if user logged in, set loading to false and navigate to home page
     console.log('User is logged in');
-    // toast.success('檢測成功，已是登入狀態!', {
-    //   position: "top-right"
-    // });
   } else {
     // if user not logged in, set loading to false and navigate to login page
     console.log('User is not logged in');
-    // toast(
-    //   <span className='align-middle'>
-    //     <FontAwesomeIcon icon={['fas', 'triangle-exclamation']} className='text-orange-400 pr-2'/>
-    //     請先登入
-    //   </span>, {
-    //   position: "top-right"
-    // });
-    // navigate('/login');
   }
 });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { DocumentData, getDocs, collection, doc, deleteDoc, getDoc, query, where, updateDoc } from 'firebase/firestore';
+import { getDocs, collection, doc, getDoc, query, where, updateDoc } from 'firebase/firestore';
 import { User, Unsubscribe, onAuthStateChanged } from 'firebase/auth';
 import toast from 'react-hot-toast';
 import { auth, db } from '@/config/firebase';
@@ -148,6 +148,7 @@ const Cart = () => {
               description={product.description}
               link="/"
               img={product.img_addr}
+              price={product.price}
               id={product.id}
               deleteProduct={deleteProduct}
             />

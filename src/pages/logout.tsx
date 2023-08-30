@@ -1,8 +1,7 @@
-import { logout } from "@/components/CheckLogin";
 import { auth } from "@/config/firebase";
-import { Unsubscribe, User, onAuthStateChanged, signOut } from "firebase/auth";
+import { Unsubscribe, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 const LogoutPage = () => { 

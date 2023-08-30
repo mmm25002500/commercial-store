@@ -1,7 +1,6 @@
 import Card from "@/components/Card";
 import { db } from "@/config/firebase";
 import { collection, getDocs, DocumentData, deleteDoc, doc } from "firebase/firestore";
-import router from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -61,6 +60,7 @@ const Store = () => {
               title={product.data.title}
               description={product.data.description}
               link="/"
+              price={product.data.price}
               img={product.data.img_addr}
               id={product.id}
               deleteProduct={deleteProduct}
