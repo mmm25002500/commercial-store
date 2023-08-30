@@ -1,6 +1,41 @@
-import { auth } from "@/config/firebase";
+import { auth, db } from "@/config/firebase";
 import { GoogleAuthProvider, Unsubscribe, User, onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { addDoc, collection, doc, getDocs, query, setDoc, where } from "firebase/firestore";
 import { toast } from 'react-hot-toast';
+
+// 查看是否有 cart 文檔，沒有的話就建立一個
+const handleUserCart = async (user: User) => {
+  const uid = user.uid;
+
+  // 查詢 cart 文檔，以 uid 為條件
+  const cartQuery = query(collection(db, 'cart'), where('uid', '==', uid));
+  const cartQuerySnapshot = await getDocs(cartQuery);
+
+  if (cartQuerySnapshot.empty) {
+    // 如果沒有 cart 文檔，就建立一個
+    const newCartData = {
+      uid: uid,
+      items: []
+    };
+    
+    try {
+      const cartRef = collection(db, 'cart');
+      await addDoc(cartRef, newCartData);
+      toast.success('建立購物車成功！', {
+        position: "top-right"
+      });
+    } catch (error) {
+      console.error('Error creating cart document:', error);
+      toast.success(`建立購物車失敗！\n錯誤訊息：\n${error}`, {
+        position: "top-right"
+      });
+    }
+  } else {
+    toast.success('購物車載入成功！', {
+      position: "top-right"
+    });
+  }
+};
 
 // 登入，會跳出 Google 登入視窗
 export const handleGoogleLogin = async () => {
@@ -12,6 +47,8 @@ export const handleGoogleLogin = async () => {
     toast.success('登入成功！', {
       position: "top-right"
     });
+
+    handleUserCart(result.user as User);
 
     return result.user as User;
   } catch (error) {
