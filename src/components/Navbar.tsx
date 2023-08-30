@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @next/next/no-html-link-for-pages */
 
-import { faCartShopping, faCircleInfo, faCircleUser, faHome, faRightFromBracket, faRightToBracket, faStore } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faCircleInfo, faCircleUser, faHome, faPlus, faRightFromBracket, faRightToBracket, faStore } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from 'next/link';
 import Themes from "./Themes";
@@ -94,6 +94,30 @@ const PersonalPageBtn = (props: {user: User| undefined}) => {
 }
 
 // 已經登入的按鈕
+const AddItemPageBtn = (props: {user: User| undefined}) => {
+  const router = useRouter();
+
+  return (
+    props.user ? (
+      <>
+        <div className="false" key="AddItemPageBtn">
+          <button
+            onClick={() => router.push('/addItem', { scroll: false })}
+            className="flex items-center mr-10 text-base font-normal hover:text-black/70 dark:hover:text-white/70"
+          >
+            <FontAwesomeIcon icon={faPlus} className="w-5 pr-1" />
+            增加商品
+          </button>
+        </div>
+      </>
+    ) : (
+      <>
+      </>
+    )
+  )
+}
+
+// 已經登入的按鈕
 const LogoutBtn = (props: {user: User| undefined, checkAuth: () => void}) => {
   const router = useRouter();
 
@@ -169,7 +193,6 @@ const Navbar = () => {
     if (user) {
       // console.log('User is logged in');
       setUser(user);
-      console.log(user);
     } else {
       setUser(undefined);
     }
@@ -215,6 +238,9 @@ const Navbar = () => {
 
           {/* 個人頁面按鈕 */}
           <PersonalPageBtn user={user}></PersonalPageBtn>
+
+          {/* 增加商品按鈕 */}
+          <AddItemPageBtn user={user}></AddItemPageBtn>
           
           {/* 切換背景 */}
           <Themes></Themes>
@@ -273,6 +299,15 @@ const Navbar = () => {
                 <LoginBtn user={user}></LoginBtn>
               </PhoneNavBtn>
             )
+          }
+
+          {/* 增加商品按鈕 */}
+          {
+            user ? (
+              <PhoneNavBtn>
+                <AddItemPageBtn user={user}></AddItemPageBtn>
+              </PhoneNavBtn>
+            ) : ''
           }
           
           {/* 登出按鈕 */}
