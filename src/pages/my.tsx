@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { deleteCart } from "./cart";
+import PersonalCard from "@/components/PersonalCard";
 
 const MyPage = () => {
   const [user, setUser] = useState<User>();
@@ -54,23 +55,14 @@ const MyPage = () => {
         <p>
           個人頁面
         </p>
-        <p>
-          你的名字：{user?.displayName} <br />
-          你的信箱：{user?.email} <br />
-          你的手機：{user?.phoneNumber} <br />
-          {
-            user?.photoURL ? (
-              <>
-                你的照片：<img src={user?.photoURL} alt="user photo" className="inline" /> <br />
-              </>
-            )
-            : <></>
-          }
-          你的uid：{user?.uid} <br />
-        </p>
-        <button type="button" onClick={deleteAccount} className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
-          刪除帳戶
-        </button>
+        <PersonalCard
+          name={user?.displayName || ''}
+          email={user?.email || ''}
+          phone={user?.phoneNumber || ''}
+          image={user?.photoURL || ''}
+          uid={user?.uid || ''}
+          deleteAccount={deleteAccount}
+        ></PersonalCard>
       </div>
     </div>
   )

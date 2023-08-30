@@ -22,7 +22,10 @@ const Personal = (props: {user: User| undefined}) => {
     >
       {
         props.user?.photoURL ? (
-          <img src={props.user?.photoURL} alt="" className="w-5 rounded-full"/>
+          <div className="relative mr-2">
+            <img className="w-7 h-7 rounded-full" src={props.user?.photoURL} alt="" />
+            <span className="top-0 left-5 absolute  w-3 h-3 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+          </div>
         ): (
           <FontAwesomeIcon icon={faCircleUser} className="w-5 pr-1" />
         )
