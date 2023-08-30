@@ -16,19 +16,15 @@ const MyPage = () => {
 
     } else {
       setUser(undefined);
+      router.push('/');
       toast.error("驗證失敗！請先登入！", {
         position: "top-right"
       });
-      router.push('/');
     }
   });
   
 
   // 一進頁面就驗證，如果沒登入就導回首頁
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
   useEffect(() => {
     checkAuth();
   }, []);

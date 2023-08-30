@@ -36,10 +36,3 @@ export const checkAuth = (): Unsubscribe => onAuthStateChanged(auth, (user) => {
     console.log('User is not logged in');
   }
 });
-
-// 登出
-export const logout = () => signOut(auth).then(() => {
-  // Sign-out successful.
-}).catch((error) => {
-  // An error happened.
-});

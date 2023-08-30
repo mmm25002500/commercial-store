@@ -30,10 +30,10 @@ const Cart = () => {
         loadCartItems(user.uid);
       } else {
         setUser(undefined);
+        router.push('/');
         toast.error('請先登入！', {
           position: 'top-right',
         });
-        router.push('/');
       }
     });
 

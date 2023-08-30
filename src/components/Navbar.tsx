@@ -7,8 +7,7 @@ import Link from 'next/link';
 import Themes from "./Themes";
 import { ReactNode, useEffect, useState } from "react";
 import { auth } from "@/config/firebase";
-import { Unsubscribe, User, onAuthStateChanged } from "firebase/auth";
-import { logout } from "./CheckLogin";
+import { Unsubscribe, User, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import { handleGoogleLogin } from "@/components/CheckLogin";
@@ -122,11 +121,16 @@ const LogoutBtn = (props: {user: User| undefined, checkAuth: () => void}) => {
   const router = useRouter();
 
   const logout_btn = () => {
-    logout();
-    props.checkAuth();
-    toast.success('登出成功！', {
-      position: "top-right"
+    signOut(auth).then(() => {
+      toast.success('登出成功！', {
+        position: "top-right"
+      });
+    }).catch((error) => {
+      toast.success(`登出失敗！\n錯誤訊息：\n${error}`, {
+        position: "top-right"
+      });
     });
+    props.checkAuth();
     
     router.push('/', { scroll: false });
   }
