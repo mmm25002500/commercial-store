@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { auth } from "@/config/firebase";
 import { signOut } from "firebase/auth";
 import {useRouter} from "next/router";
@@ -32,7 +33,11 @@ const PersonalCard = (props: Props) => {
     <>
       <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col items-center pb-10">
-          <img className="w-24 h-24 mb-3 mt-3 rounded-full shadow-lg" src={ props.image } alt="Bonnie image"/>
+          <div className="relative mb-3 mt-3">
+            <img className="w-24 h-24 shadow-lg p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-" src={props.image} alt="Bonnie image" />
+            <span className="right-1 bottom-1 absolute  w-5 h-5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+          </div>
+
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">{ props.name }</h5>
           <span className="text-sm text-gray-500 dark:text-gray-400">{ props.email }</span>
           <span className="text-sm text-gray-700 dark:text-gray-300">UID: { props.uid }</span>

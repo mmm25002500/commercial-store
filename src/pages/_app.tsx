@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }: AppProps) => {
   return (
     <ThemeProvider attribute="class">
       <Layout>
-        <NextNProgress height={5} color="#00FFFF" />
+        <NextNProgress height={2} color="#00FFFF" />
         <Toaster />
         <Component {...pageProps} />
       </Layout>

@@ -240,14 +240,14 @@ const Navbar = () => {
           {/* 登入按鈕 */}
           <LoginBtn user={user}></LoginBtn>
 
+          {/* 增加商品按鈕 */}
+          <AddItemPageBtn user={user}></AddItemPageBtn>
+
           {/* 登出按鈕 */}
           <LogoutBtn user={user} checkAuth={checkAuth}></LogoutBtn>
 
           {/* 個人頁面按鈕 */}
           <PersonalPageBtn user={user}></PersonalPageBtn>
-
-          {/* 增加商品按鈕 */}
-          <AddItemPageBtn user={user}></AddItemPageBtn>
           
           {/* 切換背景 */}
           <Themes></Themes>
