@@ -61,7 +61,7 @@ const Store = () => {
               title={product.data.title}
               description={product.data.description}
               link="/"
-              img={product.data.img}
+              img={product.data.img_addr}
               id={product.id}
               deleteProduct={deleteProduct}
             />

@@ -21,7 +21,8 @@ const CartCard = (props: Props) => {
   return (
     <div className="w-1/2 sm:w-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <a href="#">
-        <img className="rounded-t-lg" src={ props.img } alt="" />
+        <img className="rounded-t-lg" src={props.img} alt="" />
+
       </a>
       <div className="p-5">
         <a href="#">
